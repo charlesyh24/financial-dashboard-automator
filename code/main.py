@@ -1,6 +1,7 @@
 import argparse
 import pandas as pd
 from postman_crawler import wholeState
+from finaAnalysis import genPLEL, genPivot, drawROPlot, writeResultExcel
 
 
 def get_parser():
@@ -29,3 +30,12 @@ if __name__ == '__main__':
     df_BS = wholeState(companies, 'BS_M_QUAR')
 #    df_IS.to_excel('df_IS.xlsx')
 #    df_BS.to_excel('df_BS.xlsx')
+
+    df_pro, df_liq, df_eff, df_lev = genPLEL(df_BS, df_IS, year, quarter, industry)
+    p1, p2 = genPivot(df_IS)
+
+    roePath = drawROPlot(df_IS, df_BS, industry, 'ROE')
+    roaPath = drawROPlot(df_IS, df_BS, industry, 'ROA')
+
+    path = os.path.join('.', 'FA_result.xlsx')
+    writeResultExcel(path, [df_pro, df_liq, df_eff, df_lev], [p1, p2], [roePath, roaPath])
