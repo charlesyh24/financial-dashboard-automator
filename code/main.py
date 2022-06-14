@@ -2,6 +2,7 @@ import argparse
 import pandas as pd
 from postman_crawler import wholeState
 from finaAnalysis import genPLEL, genPivot, drawROPlot, writeResultExcel
+from email_handler import send_mail_with_excel
 
 
 def get_parser():
@@ -39,3 +40,5 @@ if __name__ == '__main__':
 
     path = os.path.join('.', 'FA_result.xlsx')
     writeResultExcel(path, [df_pro, df_liq, df_eff, df_lev], [p1, p2], [roePath, roaPath])
+    
+    send_mail_with_excel(email, eSUBJECT, eCONTENT, 'FA_result.xlsx')
